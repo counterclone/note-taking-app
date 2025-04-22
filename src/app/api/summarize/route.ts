@@ -2,8 +2,16 @@ import { NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
+type RequestBody = {
+  text: string
+}
+
+type ResponseData = {
+  summary: string
+}
+
 export async function POST(request: Request) {
-  const { text } = await request.json()
+  const { text } = (await request.json()) as RequestBody
 
   if (!text || typeof text !== 'string' || text.trim().length === 0) {
     return NextResponse.json(
@@ -55,7 +63,7 @@ export async function POST(request: Request) {
       )
     }
 
-    return NextResponse.json({ summary })
+    return NextResponse.json({ summary } as ResponseData)
   } catch (error) {
     console.error('Summarization error:', error)
     return NextResponse.json(

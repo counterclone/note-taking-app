@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
 
-type SummarizeResponse = {
+type SummaryResponse = {
   summary: string
 }
 
 export const useSummarize = () => {
-  return useMutation({
+  return useMutation<SummaryResponse, Error, string>({
     mutationFn: async (text: string) => {
       const response = await fetch('/api/summarize', {
         method: 'POST',
@@ -14,11 +14,8 @@ export const useSummarize = () => {
         },
         body: JSON.stringify({ text }),
       })
-      if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Failed to summarize')
-      }
-      return response.json()
+      if (!response.ok) throw new Error('Failed to summarize')
+      return response.json() as Promise<SummaryResponse>
     },
   })
 }

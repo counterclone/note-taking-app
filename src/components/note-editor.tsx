@@ -1,102 +1,82 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { useCreateNote, useUpdateNote } from '@/lib/queries/notes'
-import { useSummarize } from '@/lib/hooks/use-summarize'
-import { useState } from 'react'
-import { useToast } from '@/components/ui/use-toast'
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useCreateNote, useUpdateNote } from "@/lib/queries/notes";
+import { useSummarize } from "@/lib/hooks/use-summarize";
+import { useState } from "react";
 
 type NoteEditorProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  note?: { id: string; title: string; content: string }
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  note?: { id: string; title: string; content: string };
+};
 
 export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
-  const [title, setTitle] = useState(note?.title || '')
-  const [content, setContent] = useState(note?.content || '')
-  const [isSummarizing, setIsSummarizing] = useState(false)
-  const { mutate: createNote, isPending: isCreating } = useCreateNote()
-  const { mutate: updateNote, isPending: isUpdating } = useUpdateNote()
-  const { mutate: summarize } = useSummarize()
-  const { toast } = useToast()
+  const [title, setTitle] = useState(note?.title || "");
+  const [content, setContent] = useState(note?.content || "");
+  const [isSummarizing, setIsSummarizing] = useState(false);
+  const { mutate: createNote, isPending: isCreating } = useCreateNote();
+  const { mutate: updateNote, isPending: isUpdating } = useUpdateNote();
+  const { mutateAsync: summarize } = useSummarize(); // Changed to mutateAsync
 
   const handleSummarize = async () => {
     if (!content.trim()) {
-      toast({
-        title: 'Error',
-        description: 'Please enter some content to summarize',
-        variant: 'destructive'
-      })
-      return
+      alert("Please enter some content to summarize");
+      return;
     }
 
-    setIsSummarizing(true)
+    setIsSummarizing(true);
     try {
-      const { summary } = await summarize(content)
-      setContent(prev => `${prev}\n\n---\nSummary: ${summary}`)
-      toast({
-        title: 'Success',
-        description: 'Summary added to your note'
-      })
+      const result = await summarize(content);
+      setContent((prev) => `${prev}\n\n---\nSummary: ${result.summary}`);
+      console.log("Summary added successfully");
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to generate summary',
-        variant: 'destructive'
-      })
+      console.error("Failed to generate summary:", error);
+      alert("Failed to generate summary. Please try again.");
     } finally {
-      setIsSummarizing(false)
+      setIsSummarizing(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     if (!title.trim() || !content.trim()) {
-      toast({
-        title: 'Error',
-        description: 'Title and content are required',
-        variant: 'destructive'
-      })
-      return
+      alert("Title and content are required");
+      return;
     }
 
     try {
       if (note) {
-        await updateNote({ id: note.id, title, content })
-        toast({
-          title: 'Success',
-          description: 'Note updated successfully'
-        })
+        await updateNote({ id: note.id, title, content });
+        console.log("Note updated successfully");
       } else {
-        await createNote({ title, content })
-        toast({
-          title: 'Success',
-          description: 'Note created successfully'
-        })
+        await createNote({ title, content });
+        console.log("Note created successfully");
       }
-      onOpenChange(false)
-      setTitle('')
-      setContent('')
+      onOpenChange(false);
+      setTitle("");
+      setContent("");
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to save note',
-        variant: 'destructive'
-      })
+      console.error("Failed to save note:", error);
+      alert("Failed to save note. Please try again.");
     }
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{note ? 'Edit Note' : 'Create Note'}</DialogTitle>
+          <DialogTitle>{note ? "Edit Note" : "Create Note"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -125,32 +105,35 @@ export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
               onClick={handleSummarize}
               disabled={isSummarizing || !content.trim()}
             >
-              {isSummarizing ? 'Summarizing...' : 'Summarize'}
+              {isSummarizing ? "Summarizing..." : "Summarize"}
             </Button>
             <div className="space-x-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => {
-                  onOpenChange(false)
+                  onOpenChange(false);
                   if (!note) {
-                    setTitle('')
-                    setContent('')
+                    setTitle("");
+                    setContent("");
                   }
                 }}
               >
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                disabled={isCreating || isUpdating}
-              >
-                {note ? (isUpdating ? 'Updating...' : 'Update') : (isCreating ? 'Creating...' : 'Create')}
+              <Button type="submit" disabled={isCreating || isUpdating}>
+                {note
+                  ? isUpdating
+                    ? "Updating..."
+                    : "Update"
+                  : isCreating
+                  ? "Creating..."
+                  : "Create"}
               </Button>
             </div>
           </div>
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

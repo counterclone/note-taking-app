@@ -1,51 +1,47 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { NoteEditor } from '@/components/note-editor'
-import { useNotes, useDeleteNote } from '@/lib/queries/notes'
-import { useAuth } from '@/providers/auth-provider'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/components/ui/use-toast'
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NoteEditor } from "@/components/note-editor";
+import { useNotes, useDeleteNote } from "@/lib/queries/notes";
+import { useAuth } from "@/providers/auth-provider";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { data: notes, isLoading, isError, refetch } = useNotes()
-  const { user, signOut } = useAuth()
-  const [editorOpen, setEditorOpen] = useState(false)
-  const [editingNote, setEditingNote] = useState<{ id: string; title: string; content: string } | null>(null)
-  const { mutate: deleteNote, isPending: isDeleting } = useDeleteNote()
-  const router = useRouter()
-  const { toast } = useToast()
+  const { data: notes, isLoading, isError, refetch } = useNotes();
+  const { user, signOut } = useAuth();
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editingNote, setEditingNote] = useState<{
+    id: string;
+    title: string;
+    content: string;
+  } | null>(null);
+  const { mutate: deleteNote, isPending: isDeleting } = useDeleteNote();
+  const router = useRouter();
 
   if (!user) {
-    router.push('/login')
-    return null
+    router.push("/login");
+    return null;
   }
 
   const handleEdit = (note: { id: string; title: string; content: string }) => {
-    setEditingNote(note)
-    setEditorOpen(true)
-  }
+    setEditingNote(note);
+    setEditorOpen(true);
+  };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this note?')) {
+    if (confirm("Are you sure you want to delete this note?")) {
       try {
-        await deleteNote(id)
-        toast({
-          title: 'Success',
-          description: 'Note deleted successfully'
-        })
-        refetch()
+        await deleteNote(id);
+        console.log("Note deleted successfully");
+        refetch();
       } catch (error) {
-        toast({
-          title: 'Error',
-          description: 'Failed to delete note',
-          variant: 'destructive'
-        })
+        console.error("Failed to delete note:", error);
+        alert("Failed to delete note. Please try again.");
       }
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -64,10 +60,12 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-center">
           <h2 className="text-2xl font-bold">Your Notes</h2>
-          <Button onClick={() => {
-            setEditingNote(null)
-            setEditorOpen(true)
-          }}>
+          <Button
+            onClick={() => {
+              setEditingNote(null);
+              setEditorOpen(true);
+            }}
+          >
             Create Note
           </Button>
         </div>
@@ -109,7 +107,7 @@ export default function Home() {
                       onClick={() => handleDelete(note.id)}
                       disabled={isDeleting}
                     >
-                      {isDeleting ? 'Deleting...' : 'Delete'}
+                      {isDeleting ? "Deleting..." : "Delete"}
                     </Button>
                   </div>
                 </CardContent>
@@ -122,11 +120,11 @@ export default function Home() {
       <NoteEditor
         open={editorOpen}
         onOpenChange={(open) => {
-          setEditorOpen(open)
-          if (!open) setEditingNote(null)
+          setEditorOpen(open);
+          if (!open) setEditingNote(null);
         }}
         note={editingNote || undefined}
       />
     </div>
-  )
+  );
 }
