@@ -2,25 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Galaxy Background Styles */
+/* Dark Galaxy Background */
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #0f0e17;
+  background-color: #0a0a12;
   background-image: 
-    radial-gradient(at 71% 77%, hsla(247, 77%, 30%, 0.78) 0px, transparent 50%),
-    radial-gradient(at 82% 65%, hsla(280, 100%, 30%, 0.78) 0px, transparent 50%),
-    radial-gradient(at 10% 79%, hsla(210, 100%, 30%, 0.78) 0px, transparent 50%),
-    radial-gradient(at 78% 13%, hsla(355, 100%, 30%, 0.78) 0px, transparent 50%),
-    radial-gradient(at 26% 37%, hsla(76, 100%, 30%, 0.78) 0px, transparent 50%);
+    radial-gradient(at 71% 77%, hsla(247, 77%, 15%, 0.78) 0px, transparent 50%),
+    radial-gradient(at 82% 65%, hsla(280, 100%, 15%, 0.78) 0px, transparent 50%),
+    radial-gradient(at 10% 79%, hsla(210, 100%, 15%, 0.78) 0px, transparent 50%);
   background-size: 200% 200%;
-  animation: galaxyAnimation 20s ease infinite;
-  color: #fffffe;
+  animation: galaxyAnimation 60s ease infinite;
+  color: #e2e2e2;
 }
 
-/* Galaxy Animation */
+/* Slower, smoother galaxy animation */
 @keyframes galaxyAnimation {
-  0% {
+  0%, 100% {
     background-position: 0% 0%;
   }
   25% {
@@ -32,12 +30,9 @@ body {
   75% {
     background-position: 0% 100%;
   }
-  100% {
-    background-position: 0% 0%;
-  }
 }
 
-/* Twinkling Stars Effect */
+/* Subtle twinkling stars */
 body::before {
   content: "";
   position: fixed;
@@ -46,67 +41,57 @@ body::before {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 160px 120px, white, rgba(0,0,0,0));
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 60px 90px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 120px 40px, rgba(255,255,255,0.8), rgba(0,0,0,0));
   background-size: 200px 200px;
-  animation: twinkle 5s linear infinite;
+  animation: twinkle 8s ease-in-out infinite;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 @keyframes twinkle {
-  0% {
-    opacity: 0.3;
+  0%, 100% {
+    opacity: 0.2;
   }
   50% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0.3;
+    opacity: 0.5;
   }
 }
 
-/* Card styling to make content readable over galaxy background */
-.card {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
-}
+/* Improved UI Components */
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-gray-900/70 backdrop-blur-sm border border-gray-700 rounded-lg shadow-lg transition-all duration-300;
+  }
+  
+  .card:hover {
+    @apply border-gray-500 shadow-xl;
+    transform: translateY(-2px);
+  }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-}
+  /* Buttons */
+  .btn-primary {
+    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
+  }
+  
+  .btn-outline {
+    @apply border border-indigo-500 text-indigo-400 hover:bg-indigo-900/50 hover:text-indigo-100 font-medium py-2 px-4 rounded-lg transition-all duration-200;
+  }
 
-/* Text contrast */
-.text-gray-600 {
-  color: #a7a9be;
-}
+  /* Inputs */
+  .input-field {
+    @apply bg-gray-800/70 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200;
+  }
 
-/* Button styling to match galaxy theme */
-.btn-primary {
-  background-color: #ff8906;
-  color: #fffffe;
-  transition: all 0.3s ease;
-}
+  /* Text */
+  .text-muted {
+    @apply text-gray-400;
+  }
 
-.btn-primary:hover {
-  background-color: #e53170;
-  transform: translateY(-2px);
-}
-
-/* Input field styling */
-.input-field {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fffffe;
-}
-
-.input-field::placeholder {
-  color: #a7a9be;
+  /* Special accents */
+  .text-accent {
+    @apply text-indigo-300;
+  }
 }
