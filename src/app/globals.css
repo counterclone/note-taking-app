@@ -1,12 +1,13 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Galaxy Background */
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #0b0b1e; /* Static dark background */
+  background-color: #0b0b1e;
   background-image: 
     radial-gradient(at 71% 77%, rgba(34, 0, 64, 0.78) 0px, transparent 50%),
     radial-gradient(at 82% 65%, rgba(64, 0, 96, 0.78) 0px, transparent 50%),
@@ -17,7 +18,6 @@ body {
   overflow: hidden;
 }
 
-/* Smooth Galaxy Animation */
 @keyframes galaxyAnimation {
   0%, 100% {
     background-position: 0% 0%;
@@ -33,7 +33,6 @@ body {
   }
 }
 
-/* Star Field */
 body::before {
   content: "";
   position: fixed;
@@ -63,29 +62,29 @@ body::before {
 /* UI Components */
 @layer components {
   .card {
-    @apply bg-gray-800 bg-opacity-70 backdrop-blur border border-gray-700 rounded-lg shadow-lg transition duration-300;
+    @apply bg-gray-900 bg-opacity-80 backdrop-blur border border-gray-600 rounded-xl shadow-2xl p-8 transition duration-300;
   }
 
   .card:hover {
-    @apply border-gray-500 shadow-xl;
+    @apply border-gray-400 shadow-2xl;
     transform: translateY(-2px);
   }
 
   .btn-primary {
-    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200;
+    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200;
   }
 
   .btn-outline {
-    @apply border border-indigo-500 text-indigo-400 font-medium py-2 px-4 rounded-lg transition duration-200;
-    background-color: rgba(31, 41, 55, 0.5); /* approx for bg-indigo-900/50 */
+    @apply border border-indigo-500 text-indigo-300 font-medium py-2 px-4 rounded-lg transition duration-200;
+    background-color: rgba(31, 41, 55, 0.5);
   }
 
   .btn-outline:hover {
-    @apply text-indigo-100 shadow-xl;
+    @apply text-indigo-100 shadow-lg;
   }
 
   .input-field {
-    @apply bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-200;
+    @apply bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-200;
   }
 
   .text-muted {
@@ -97,9 +96,8 @@ body::before {
   }
 }
 
-/* Aesthetic Adjustments */
 a {
-  @apply text-indigo-300 hover:text-indigo-500;
+  @apply text-indigo-300 hover:text-indigo-400;
 }
 
 h1, h2, h3, p {
