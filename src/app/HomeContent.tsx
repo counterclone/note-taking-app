@@ -52,7 +52,7 @@ export default function HomeContent() {
 
   return (
     <div className="min-h-screen bg-purple-50">
-      <header className="bg-white shadow-sm">
+      <header className="bg-purple shadow-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <h1 className="text-xl font-bold">Notes App</h1>
           <div className="flex items-center space-x-4">
