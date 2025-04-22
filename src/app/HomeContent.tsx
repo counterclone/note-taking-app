@@ -42,7 +42,7 @@ export default function HomeContent() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="shadow-md backdrop-blur border-b border-white/20">
+      <header className="shadow-md backdrop-blur-lg border-b border-white/20 bg-background">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <h1 className="text-xl font-bold text-white drop-shadow-md">
             Notes App
@@ -62,7 +62,7 @@ export default function HomeContent() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-white drop-shadow">
+          <h2 className="text-2xl font-bold text-white drop-shadow-md">
             Your Notes
           </h2>
           <Button
@@ -93,7 +93,7 @@ export default function HomeContent() {
             {notes?.map((note) => (
               <Card
                 key={note.id}
-                className="hover:shadow-lg transition-shadow flex flex-col bg-white/10 backdrop-blur border border-white/20 text-white"
+                className="hover:shadow-lg transition-shadow flex flex-col bg-white/10 backdrop-blur-md border border-white/20 text-white"
               >
                 <CardHeader>
                   <CardTitle className="truncate text-white">
