@@ -52,7 +52,7 @@ export default function HomeContent() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="shadow-md bg-white/10 backdrop-blur border-b border-white/20">
+      <header className="shadow-md backdrop-blur border-b border-white/20">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <h1 className="text-xl font-bold text-white drop-shadow-md">
             Notes App
