@@ -8,6 +8,7 @@ import { useAuth } from "@/providers/auth-provider";  // Keep these imports
 import { useState, useEffect } from "react";  // Keep these imports
 import { useRouter } from "next/navigation";  // Keep this import
 
+
 export default function HomeContent() {
   const { data: notes, isLoading, isError, refetch } = useNotes();
   const { user } = useAuth();
@@ -54,15 +55,15 @@ export default function HomeContent() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="shadow-md backdrop-blur border-b border-black/20">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <h1 className="text-xl font-bold text-black drop-shadow-md">
+          <h1 className="text-xl font-bold text-primary drop-shadow-md">
             Notes App
           </h1>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-white/70">{user.email}</span>
+            <span className="text-sm text-muted-foreground">{user.email}</span>
             <Button
               variant="outline"
               onClick={() => router.push("/login")}
-              className="text-black border-black/20 hover:bg-purple/10"
+              className="text-primary border-primary/20 hover:bg-primary/10"
             >
               Sign Out
             </Button>
@@ -72,7 +73,7 @@ export default function HomeContent() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-black drop-shadow">
+          <h2 className="text-2xl font-bold text-primary drop-shadow">
             Your Notes
           </h2>
           <Button
@@ -80,7 +81,7 @@ export default function HomeContent() {
               setEditingNote(null);
               setEditorOpen(true);
             }}
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+            className="bg-accent hover:bg-accent/70 text-white"
           >
             Create Note
           </Button>
@@ -88,14 +89,14 @@ export default function HomeContent() {
 
         {isLoading ? (
           <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         ) : isError ? (
-          <div className="text-center py-12 text-red-400">
+          <div className="text-center py-12 text-destructive">
             Failed to load notes. Please try again.
           </div>
         ) : notes?.length === 0 ? (
-          <div className="text-center py-12 text-black/60">
+          <div className="text-center py-12 text-muted-foreground">
             You do not have any notes yet. Create your first note!
           </div>
         ) : (
@@ -103,16 +104,16 @@ export default function HomeContent() {
             {notes?.map((note) => (
               <Card
                 key={note.id}
-                className="hover:shadow-lg transition-shadow flex flex-col bg-black/10 backdrop-blur border border-white/20 text-white"
+                className="hover:shadow-lg transition-shadow flex flex-col bg-card backdrop-blur border border-card-foreground/20 text-card-foreground"
               >
                 <CardHeader>
-                  <CardTitle className="truncate text-white">
+                  <CardTitle className="truncate text-card-foreground">
                     {note.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-grow">
                   <div className="flex-grow overflow-auto mb-4">
-                    <pre className="whitespace-pre-wrap font-sans text-white/70">
+                    <pre className="whitespace-pre-wrap font-sans text-muted-foreground">
                       {note.content}
                     </pre>
                   </div>
@@ -121,7 +122,7 @@ export default function HomeContent() {
                       variant="outline"
                       size="sm"
                       onClick={() => handleEdit(note)}
-                      className="text-black border-white/20 hover:bg-white/10"
+                      className="text-primary border-card-foreground/20 hover:bg-card-foreground/10"
                     >
                       Edit
                     </Button>
@@ -130,7 +131,7 @@ export default function HomeContent() {
                       size="sm"
                       onClick={() => handleDelete(note.id)}
                       disabled={isDeleting}
-                      className="bg-red-600 hover:bg-red-700 text-white"
+                      className="bg-destructive hover:bg-destructive/80 text-white"
                     >
                       {isDeleting ? "Deleting..." : "Delete"}
                     </Button>
@@ -153,3 +154,4 @@ export default function HomeContent() {
     </div>
   );
 }
+
