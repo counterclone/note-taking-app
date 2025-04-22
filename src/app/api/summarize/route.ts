@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ summary });
 
   } catch (error: unknown) {
-    console.error('Summarization error:');
+    console.error('Summarization error:',error);
     return NextResponse.json(
       { error: 'Internal server error during summarization' },
       { status: 500 }
