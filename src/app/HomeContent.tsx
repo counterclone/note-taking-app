@@ -51,13 +51,17 @@ export default function HomeContent() {
   };
 
   return (
-    <div className="min-h-screen bg-purple-50">
-      <header className="bg-purple shadow-sm">
+    <div className="min-h-screen">
+      <header className="bg-gray-900 bg-opacity-90 backdrop-blur border-b border-gray-700 shadow-md">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <h1 className="text-xl font-bold">Notes App</h1>
+          <h1 className="text-xl font-bold text-white">Notes App</h1>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600">{user.email}</span>
-            <Button variant="outline" onClick={() => router.push("/login")}>
+            <span className="text-sm text-muted">{user.email}</span>
+            <Button
+              variant="outline"
+              onClick={() => router.push("/login")}
+              className="btn-outline"
+            >
               Sign Out
             </Button>
           </div>
@@ -66,12 +70,13 @@ export default function HomeContent() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Your Notes</h2>
+          <h2 className="text-2xl font-bold text-white">Your Notes</h2>
           <Button
             onClick={() => {
               setEditingNote(null);
               setEditorOpen(true);
             }}
+            className="btn-primary"
           >
             Create Note
           </Button>
@@ -79,37 +84,36 @@ export default function HomeContent() {
 
         {isLoading ? (
           <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-300"></div>
           </div>
         ) : isError ? (
-          <div className="text-center py-12 text-red-500">
+          <div className="text-center py-12 text-red-500 font-semibold">
             Failed to load notes. Please try again.
           </div>
         ) : notes?.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-muted">
             You do not have any notes yet. Create your first note!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes?.map((note) => (
-              <Card
+              <div
                 key={note.id}
-                className="hover:shadow-md transition-shadow flex flex-col"
+                className="card flex flex-col hover:border-gray-400"
               >
-                <CardHeader>
-                  <CardTitle className="truncate">{note.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col flex-grow">
-                  <div className="flex-grow overflow-auto mb-4">
-                    <pre className="whitespace-pre-wrap font-sans text-gray-600">
-                      {note.content}
-                    </pre>
+                <div className="mb-4">
+                  <h3 className="truncate text-accent text-lg">{note.title}</h3>
+                </div>
+                <div className="flex flex-col flex-grow">
+                  <div className="flex-grow overflow-auto mb-4 text-sm text-muted whitespace-pre-wrap font-sans">
+                    {note.content}
                   </div>
                   <div className="flex space-x-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleEdit(note)}
+                      className="btn-outline"
                     >
                       Edit
                     </Button>
@@ -118,12 +122,13 @@ export default function HomeContent() {
                       size="sm"
                       onClick={() => handleDelete(note.id)}
                       disabled={isDeleting}
+                      className="btn-outline"
                     >
                       {isDeleting ? "Deleting..." : "Delete"}
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         )}

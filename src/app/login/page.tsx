@@ -25,50 +25,66 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center bg-purple justify-center">
-      <div className="w-full max-w-md rounded-lg  p-8 shadow-md">
-        <h1 className="mb-6 text-center text-2xl font-bold">Login</h1>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="w-full max-w-md rounded-lg p-8 shadow-md bg-gray-900 bg-opacity-80 backdrop-blur border border-gray-700">
+        <h1 className="mb-6 text-center text-2xl font-bold text-white">
+          Login
+        </h1>
 
         {error && <div className="mb-4 text-red-500">{error}</div>}
 
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-white">
+              Email
+            </Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="input-field w-full"
             />
           </div>
           <div>
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-white">
+              Password
+            </Label>
             <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="input-field w-full"
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full btn-primary">
             Login
           </Button>
         </form>
 
         <div className="my-4 flex items-center">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-4 text-gray-500">or</span>
-          <div className="flex-grow border-t border-gray-300"></div>
+          <div className="flex-grow border-t border-gray-600"></div>
+          <span className="mx-4 text-muted">or</span>
+          <div className="flex-grow border-t border-gray-600"></div>
         </div>
 
-        <Button onClick={signInWithGoogle} variant="outline" className="w-full">
+        <Button
+          onClick={signInWithGoogle}
+          variant="outline"
+          className="w-full btn-outline"
+        >
           Continue with Google
         </Button>
 
         <div className="mt-4 text-center">
-          <Button variant="link" onClick={() => router.push("/signup")}>
+          <Button
+            variant="link"
+            onClick={() => router.push("/signup")}
+            className="text-accent hover:text-indigo-400"
+          >
             Don&apos;t have an account? Sign up
           </Button>
         </div>
