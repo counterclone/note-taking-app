@@ -1,13 +1,3 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { NoteEditor } from "@/components/note-editor";
-import { useNotes, useDeleteNote } from "@/lib/queries/notes";
-import { useAuth } from "@/providers/auth-provider";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-
 export default function HomeContent() {
   const { data: notes, isLoading, isError, refetch } = useNotes();
   const { user } = useAuth();
