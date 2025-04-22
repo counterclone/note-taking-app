@@ -21,62 +21,59 @@ type NoteEditorProps = {
 };
 
 export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
-  const [title, setTitle] = useState(note?.title || "");
-  const [content, setContent] = useState(note?.content || "");
-  const [isSummarizing, setIsSummarizing] = useState(false);
-  const { mutate: createNote } = useCreateNote();
-  const { mutate: updateNote } = useUpdateNote();
-  const { mutateAsync: summarize } = useSummarize();
+  const [title, setTitle] = useState(note?.title || '')
+  const [content, setContent] = useState(note?.content || '')
+  const [isSummarizing, setIsSummarizing] = useState(false)
+  const [error, setError] = useState('')
+  const { mutate: createNote, isPending: isCreating } = useCreateNote()
+  const { mutate: updateNote, isPending: isUpdating } = useUpdateNote()
+  const { mutate: summarize } = useSummarize()
 
   const handleSummarize = async () => {
-    if (!content) return;
-    setIsSummarizing(true);
+    if (!content) return
+    setIsSummarizing(true)
+    setError('')
     try {
-      const result = await summarize(content);
-      setContent((prev) => `${prev}\n\nSummary:\n${result.summary}`);
-    } catch (error) {
-      console.error("Summarization failed:", error);
+      const { summary } = await summarize(content)
+      setContent(prev => `${prev}\n\n---\n\nSummary:\n${summary}`)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Summarization failed')
     } finally {
-      setIsSummarizing(false);
+      setIsSummarizing(false)
     }
-  };
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (note) {
-      updateNote({ id: note.id, title, content });
-    } else {
-      createNote({ title, content });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    try {
+      if (note) {
+        await updateNote({ id: note.id, title, content })
+      } else {
+        await createNote({ title, content })
+        // Reset form after successful creation
+        setTitle('')
+        setContent('')
+      }
+      onOpenChange(false)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save note')
     }
-    onOpenChange(false);
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{note ? "Edit Note" : "Create Note"}</DialogTitle>
+          <DialogTitle>{note ? 'Edit Note' : 'Create Note'}</DialogTitle>
         </DialogHeader>
+        {error && (
+          <div className="rounded-md bg-red-50 p-4 mb-4">
+            <p className="text-sm text-red-700">{error}</p>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="content">Content</Label>
-            <Textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              rows={10}
-              required
-            />
-          </div>
+          {/* ... rest of the form ... */}
           <div className="flex justify-between">
             <Button
               type="button"
@@ -84,12 +81,17 @@ export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
               onClick={handleSummarize}
               disabled={isSummarizing || !content}
             >
-              {isSummarizing ? "Summarizing..." : "Summarize"}
+              {isSummarizing ? 'Summarizing...' : 'Summarize'}
             </Button>
-            <Button type="submit">{note ? "Update" : "Create"}</Button>
+            <Button 
+              type="submit"
+              disabled={isCreating || isUpdating}
+            >
+              {note ? (isUpdating ? 'Updating...' : 'Update') : (isCreating ? 'Creating...' : 'Create')}
+            </Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
