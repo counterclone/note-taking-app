@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 
-export default function AuthCallback() {
+export default function OAuthHandlerPage() {
   const router = useRouter();
 
   useEffect(() => {
@@ -12,11 +12,10 @@ export default function AuthCallback() {
       const { data, error } = await supabase.auth.getSession();
 
       if (data.session) {
-        // Optional: store in state or cookies if needed
-        router.push("/"); // Redirect to your app's homepage or dashboard
+        router.push("/"); // ✅ redirect to home or dashboard
       } else {
         console.error("No session found", error);
-        router.push("/login");
+        router.push("/login"); // fallback
       }
     };
 
