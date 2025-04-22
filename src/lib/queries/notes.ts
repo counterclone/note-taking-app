@@ -15,7 +15,7 @@ export const useNotes = () => {
         .order('created_at', { ascending: false })
       
       if (error) throw error
-      return data
+      return data || []
     },
   })
 }
@@ -50,7 +50,7 @@ export const useUpdateNote = () => {
   const queryClient = useQueryClient()
   
   return useMutation({
-    mutationFn: async ({ id, ...updates }: { id: string; title?: string; content?: string; summary?: string }) => {
+    mutationFn: async ({ id, ...updates }: { id: string; title?: string; content?: string }) => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('User not authenticated')
       
