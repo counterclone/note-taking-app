@@ -69,7 +69,7 @@ export default function LoginPage() {
 
         <div className="mt-4 text-center">
           <Button variant="link" onClick={() => router.push("/signup")}>
-            Don't have an account? Sign up
+            Don&apos;t have an account? Sign up
           </Button>
         </div>
       </div>
