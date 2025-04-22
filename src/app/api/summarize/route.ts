@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 import axios from 'axios';
-type RequestBody = {
-  text: string
-}
+// type RequestBody = {
+//   text: string
+// }
 
-type ResponseData = {
-  summary: string
-}
+// type ResponseData = {
+//   summary: string
+// }
 
 
 
@@ -48,8 +48,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ summary });
 
-  } catch (error: any) {
-    console.error('Summarization error:', error?.response?.data || error.message);
+  } catch (error: unknown) {
+    console.error('Summarization error:');
     return NextResponse.json(
       { error: 'Internal server error during summarization' },
       { status: 500 }
