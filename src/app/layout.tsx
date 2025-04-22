@@ -6,10 +6,9 @@ import { AuthProvider } from "@/providers/auth-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Notes App",
-  description: "A note-taking app with AI summarization",
-};
+// layout.tsx (Next.js App Router)
+import "./globals.css";
+import ReactQueryProvider from "../providers/ReactQueryProvider";
 
 export default function RootLayout({
   children,
@@ -18,10 +17,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </QueryProvider>
+      <body className="galaxy-background">
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );

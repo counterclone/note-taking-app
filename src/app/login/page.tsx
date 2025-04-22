@@ -25,50 +25,72 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-center text-2xl font-bold">Login</h1>
+    <div className="flex min-h-screen items-center justify-center ">
+      <div className="w-full max-w-md rounded-xl bg-white bg-opacity-10 backdrop-blur-md p-8 shadow-2xl border-2 border-purple-600">
+        <h1 className="mb-6 text-center text-3xl font-semibold text-white">
+          Login
+        </h1>
 
-        {error && <div className="mb-4 text-red-500">{error}</div>}
+        {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
 
-        <form onSubmit={handleEmailLogin} className="space-y-4">
+        <form onSubmit={handleEmailLogin} className="space-y-6">
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-white">
+              Email
+            </Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="mt-1 p-3 w-full rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-purple-400 focus:outline-none"
             />
           </div>
           <div>
-            <Label htmlFor="password">Password</Label>
+            <Label
+              htmlFor="password"
+              className="text-sm font-medium text-white"
+            >
+              Password
+            </Label>
             <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="mt-1 p-3 w-full rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-purple-400 focus:outline-none"
             />
           </div>
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition duration-200"
+          >
             Login
           </Button>
         </form>
 
-        <div className="my-4 flex items-center">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-4 text-gray-500">or</span>
-          <div className="flex-grow border-t border-gray-300"></div>
+        <div className="my-4 flex items-center text-white">
+          <div className="flex-grow border-t border-white/40"></div>
+          <span className="mx-4">or</span>
+          <div className="flex-grow border-t border-white/40"></div>
         </div>
 
-        <Button onClick={signInWithGoogle} variant="outline" className="w-full">
+        <Button
+          onClick={signInWithGoogle}
+          variant="outline"
+          className="w-full py-3 border-purple-600 text-purple-600 hover:bg-purple-100 border-2 rounded-lg transition duration-200"
+        >
           Continue with Google
         </Button>
 
         <div className="mt-4 text-center">
-          <Button variant="link" onClick={() => router.push("/signup")}>
+          <Button
+            variant="link"
+            onClick={() => router.push("/signup")}
+            className="text-purple-600 hover:underline"
+          >
             Don&apos;t have an account? Sign up
           </Button>
         </div>
