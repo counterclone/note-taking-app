@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-
+import OpenAI from "openai";
 export const runtime = 'edge'
 
 type RequestBody = {
@@ -10,65 +10,46 @@ type ResponseData = {
   summary: string
 }
 
-export async function POST(request: Request) {
-  const { text } = (await request.json()) as RequestBody
+const openai = new OpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: process.env.DEEPSEEK_API_KEY
+});
 
-  if (!text || typeof text !== 'string' || text.trim().length === 0) {
-    return NextResponse.json(
-      { error: 'Valid text is required for summarization' },
-      { status: 400 }
-    )
-  }
-
+export async function POST(req: Request) {
   try {
-    const response = await fetch('https://api.deepseek.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant that summarizes text concisely. Provide a 1-2 sentence summary of the given text.'
-          },
-          {
-            role: 'user',
-            content: `Summarize the following text in 1-2 sentences:\n\n${text}`
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 150
-      })
-    })
+    const { text } = await req.json();
 
-    if (!response.ok) {
-      const error = await response.json()
-      console.error('DeepSeek API error:', error)
-      return NextResponse.json(
-        { error: 'Failed to get summary from API' },
-        { status: response.status }
-      )
-    }
+    const completion = await openai.chat.completions.create({
+      model: 'deepseek/deepseek-r1-zero:free',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a helpful assistant that summarizes text concisely. Provide a 1-2 sentence summary of the given text.'
+        },
+        {
+          role: 'user',
+          content: `Summarize the following text in 1-2 sentences:\n\n${text}`
+        }
+      ],
+      
+    });
 
-    const data = await response.json()
-    const summary = data.choices[0]?.message?.content?.trim()
+    const summary = completion.choices[0]?.message?.content?.trim();
 
     if (!summary) {
       return NextResponse.json(
         { error: 'No summary content in response' },
         { status: 500 }
-      )
+      );
     }
 
-    return NextResponse.json({ summary } as ResponseData)
+    return NextResponse.json({ summary });
+
   } catch (error) {
-    console.error('Summarization error:', error)
+    console.error('Summarization error:', error);
     return NextResponse.json(
       { error: 'Internal server error during summarization' },
       { status: 500 }
-    )
+    );
   }
 }
