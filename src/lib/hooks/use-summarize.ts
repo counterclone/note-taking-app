@@ -5,7 +5,7 @@ type SummarizeResponse = {
 }
 
 export const useSummarize = () => {
-  return useMutation<SummarizeResponse, Error, string>({
+  return useMutation({
     mutationFn: async (text: string) => {
       const response = await fetch('/api/summarize', {
         method: 'POST',
@@ -14,7 +14,10 @@ export const useSummarize = () => {
         },
         body: JSON.stringify({ text }),
       })
-      if (!response.ok) throw new Error('Failed to summarize')
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to summarize')
+      }
       return response.json()
     },
   })
