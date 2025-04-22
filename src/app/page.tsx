@@ -7,14 +7,16 @@ import { useNotes, useDeleteNote } from '@/lib/queries/notes'
 import { useAuth } from '@/providers/auth-provider'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function Home() {
-  const { data: notes, isLoading, isError } = useNotes()
+  const { data: notes, isLoading, isError, refetch } = useNotes()
   const { user, signOut } = useAuth()
   const [editorOpen, setEditorOpen] = useState(false)
   const [editingNote, setEditingNote] = useState<{ id: string; title: string; content: string } | null>(null)
   const { mutate: deleteNote, isPending: isDeleting } = useDeleteNote()
   const router = useRouter()
+  const { toast } = useToast()
 
   if (!user) {
     router.push('/login')
@@ -30,8 +32,17 @@ export default function Home() {
     if (confirm('Are you sure you want to delete this note?')) {
       try {
         await deleteNote(id)
+        toast({
+          title: 'Success',
+          description: 'Note deleted successfully'
+        })
+        refetch()
       } catch (error) {
-        console.error('Error deleting note:', error)
+        toast({
+          title: 'Error',
+          description: 'Failed to delete note',
+          variant: 'destructive'
+        })
       }
     }
   }
@@ -66,7 +77,9 @@ export default function Home() {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
           </div>
         ) : isError ? (
-          <div className="text-red-500">Error loading notes</div>
+          <div className="text-center py-12 text-red-500">
+            Failed to load notes. Please try again.
+          </div>
         ) : notes?.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
             You don't have any notes yet. Create your first note!
