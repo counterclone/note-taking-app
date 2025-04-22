@@ -14,12 +14,18 @@ export const useNotes = () => {
 
 export const useCreateNote = () => {
   const queryClient = useQueryClient()
+  const { user } = useAuth()
   
   return useMutation({
     mutationFn: async (note: { title: string; content: string }) => {
+      if (!user) throw new Error('User not authenticated')
+      
       const { data, error } = await supabase
         .from('notes')
-        .insert(note)
+        .insert({ 
+          ...note,
+          user_id: user.id 
+        })
         .select()
         .single()
       if (error) throw error
