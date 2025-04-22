@@ -63,7 +63,7 @@ body::before {
 @layer components {
   /* Cards */
   .card {
-    @apply bg-gray-900/70 backdrop-blur-sm border border-gray-700 rounded-lg shadow-lg transition-all duration-300;
+    @apply bg-gray-900 bg-opacity-70 backdrop-blur-sm border border-gray-700 rounded-lg shadow-lg transition-all duration-300;
   }
   
   .card:hover {
