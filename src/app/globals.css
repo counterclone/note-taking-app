@@ -1,20 +1,19 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 /* Galaxy Background */
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: var(--background); /* Dark theme background */
+  background-color: #0b0b1e; /* Static dark background */
   background-image: 
-    radial-gradient(at 71% 77%, hsla(247, 77%, 15%, 0.78) 0px, transparent 50%),
-    radial-gradient(at 82% 65%, hsla(280, 100%, 15%, 0.78) 0px, transparent 50%),
-    radial-gradient(at 10% 79%, hsla(210, 100%, 15%, 0.78) 0px, transparent 50%);
+    radial-gradient(at 71% 77%, rgba(34, 0, 64, 0.78) 0px, transparent 50%),
+    radial-gradient(at 82% 65%, rgba(64, 0, 96, 0.78) 0px, transparent 50%),
+    radial-gradient(at 10% 79%, rgba(0, 0, 96, 0.78) 0px, transparent 50%);
   background-size: 200% 200%;
   animation: galaxyAnimation 60s ease infinite;
-  color: var(--foreground); /* Set text color */
+  color: #e5e5e5;
   overflow: hidden;
 }
 
@@ -43,9 +42,9 @@ body::before {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 60px 90px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 120px 40px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 60px 90px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 120px 40px, rgba(255,255,255,0.8), transparent);
   background-size: 200px 200px;
   animation: twinkle 8s ease-in-out infinite;
   z-index: -1;
@@ -61,37 +60,32 @@ body::before {
   }
 }
 
-/* UI Components with Tailwind */
+/* UI Components */
 @layer components {
   .card {
-    @apply bg-[#2e2e3d] bg-opacity-70 backdrop-blur-sm border border-[#383848] rounded-lg shadow-lg transition-all duration-300;
+    @apply bg-gray-800 bg-opacity-70 backdrop-blur border border-gray-700 rounded-lg shadow-lg transition duration-300;
   }
 
   .card:hover {
-    @apply border-[#505050] shadow-xl;
+    @apply border-gray-500 shadow-xl;
     transform: translateY(-2px);
   }
 
   .btn-primary {
-    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  }
-
-  .btn-primary:hover {
-    @apply shadow-xl;
+    @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200;
   }
 
   .btn-outline {
-    @apply border border-indigo-500 text-indigo-400 hover:bg-indigo-900/50 hover:text-indigo-100 font-medium py-2 px-4 rounded-lg transition-all duration-200;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    @apply border border-indigo-500 text-indigo-400 font-medium py-2 px-4 rounded-lg transition duration-200;
+    background-color: rgba(31, 41, 55, 0.5); /* approx for bg-indigo-900/50 */
   }
 
   .btn-outline:hover {
-    @apply shadow-xl;
+    @apply text-indigo-100 shadow-xl;
   }
 
   .input-field {
-    @apply bg-gray-800/70 border border-[#383848] rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200;
+    @apply bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition duration-200;
   }
 
   .text-muted {
@@ -110,50 +104,4 @@ a {
 
 h1, h2, h3, p {
   @apply text-center text-white font-bold;
-}
-
-
-
-/* Cards */
-
-.card {
-  @apply bg-[#2e2e3d] bg-opacity-70 backdrop-blur-sm border border-[#383848] rounded-lg shadow-lg transition-all duration-300;
-}
-
-.card:hover {
-  @apply border-[#505050] shadow-xl;
-  transform: translateY(-2px);
-}
-
-/* Buttons */
-.btn-primary {
-  @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.btn-primary:hover {
-  @apply shadow-xl;
-}
-
-.btn-outline {
-  @apply border border-indigo-500 text-indigo-400 hover:bg-indigo-900/50 hover:text-indigo-100 font-medium py-2 px-4 rounded-lg transition-all duration-200;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.btn-outline:hover {
-  @apply shadow-xl;
-}
-
-/* Inputs */
-.input-field {
-  @apply bg-gray-800/70 border border-[#383848] rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200;
-}
-
-/* Text */
-.text-muted {
-  @apply text-gray-400;
-}
-
-.text-accent {
-  @apply text-indigo-300;
 }
