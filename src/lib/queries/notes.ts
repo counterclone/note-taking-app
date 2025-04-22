@@ -11,11 +11,11 @@ export const useNotes = () => {
       const { data, error } = await supabase
         .from('notes')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', user.id)  // Only get notes for current user
         .order('created_at', { ascending: false })
       
       if (error) throw error
-      return data || []
+      return data
     },
   })
 }
@@ -32,7 +32,7 @@ export const useCreateNote = () => {
         .from('notes')
         .insert({
           ...note,
-          user_id: user.id
+          user_id: user.id  // Always set the current user's ID
         })
         .select()
         .single()
@@ -58,7 +58,7 @@ export const useUpdateNote = () => {
         .from('notes')
         .update(updates)
         .eq('id', id)
-        .eq('user_id', user.id)
+        .eq('user_id', user.id)  // Ensure user owns the note
         .select()
         .single()
       
@@ -83,7 +83,7 @@ export const useDeleteNote = () => {
         .from('notes')
         .delete()
         .eq('id', id)
-        .eq('user_id', user.id)
+        .eq('user_id', user.id)  // Ensure user owns the note
       
       if (error) throw error
     },
