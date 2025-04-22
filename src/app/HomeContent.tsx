@@ -54,7 +54,9 @@ export default function HomeContent() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="shadow-md backdrop-blur border-b border-border bg-background/80">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <h1 className="text-xl font-bold text-foreground drop-shadow-md">Notes App</h1>
+          <h1 className="text-xl font-bold text-foreground drop-shadow-md">
+            Notes App
+          </h1>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-muted-foreground">{user.email}</span>
             <Button
@@ -70,7 +72,9 @@ export default function HomeContent() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-foreground drop-shadow">Your Notes</h2>
+          <h2 className="text-2xl font-bold text-foreground drop-shadow">
+            Your Notes
+          </h2>
           <Button
             onClick={() => {
               setEditingNote(null);
@@ -102,7 +106,9 @@ export default function HomeContent() {
                 className="hover:shadow-lg transition-shadow flex flex-col bg-card border border-border text-card-foreground"
               >
                 <CardHeader>
-                  <CardTitle className="truncate text-card-foreground">{note.title}</CardTitle>
+                  <CardTitle className="truncate text-card-foreground">
+                    {note.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-grow">
                   <div className="flex-grow overflow-auto mb-4">
