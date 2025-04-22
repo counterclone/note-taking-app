@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { useCreateNote, useUpdateNote } from '@/lib/queries/notes'
 import { useSummarize } from '@/lib/hooks/use-summarize'
 import { useState } from 'react'
+import { useToast } from '@/components/ui/use-toast'
 
 type NoteEditorProps = {
   open: boolean
@@ -22,15 +23,32 @@ export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
   const { mutate: createNote, isPending: isCreating } = useCreateNote()
   const { mutate: updateNote, isPending: isUpdating } = useUpdateNote()
   const { mutate: summarize } = useSummarize()
+  const { toast } = useToast()
 
   const handleSummarize = async () => {
-    if (!content) return
+    if (!content.trim()) {
+      toast({
+        title: 'Error',
+        description: 'Please enter some content to summarize',
+        variant: 'destructive'
+      })
+      return
+    }
+
     setIsSummarizing(true)
     try {
       const { summary } = await summarize(content)
       setContent(prev => `${prev}\n\n---\nSummary: ${summary}`)
+      toast({
+        title: 'Success',
+        description: 'Summary added to your note'
+      })
     } catch (error) {
-      console.error('Summarization failed:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to generate summary',
+        variant: 'destructive'
+      })
     } finally {
       setIsSummarizing(false)
     }
@@ -38,20 +56,39 @@ export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!title.trim() || !content.trim()) {
+      toast({
+        title: 'Error',
+        description: 'Title and content are required',
+        variant: 'destructive'
+      })
+      return
+    }
+
     try {
       if (note) {
         await updateNote({ id: note.id, title, content })
+        toast({
+          title: 'Success',
+          description: 'Note updated successfully'
+        })
       } else {
         await createNote({ title, content })
+        toast({
+          title: 'Success',
+          description: 'Note created successfully'
+        })
       }
       onOpenChange(false)
-      // Reset form only after successful submission
-      if (!note) {
-        setTitle('')
-        setContent('')
-      }
+      setTitle('')
+      setContent('')
     } catch (error) {
-      console.error('Error saving note:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to save note',
+        variant: 'destructive'
+      })
     }
   }
 
@@ -63,7 +100,7 @@ export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title">Title *</Label>
             <Input
               id="title"
               value={title}
@@ -72,7 +109,7 @@ export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
             />
           </div>
           <div>
-            <Label htmlFor="content">Content</Label>
+            <Label htmlFor="content">Content *</Label>
             <Textarea
               id="content"
               value={content}
@@ -96,4 +133,24 @@ export function NoteEditor({ open, onOpenChange, note }: NoteEditorProps) {
                 variant="outline"
                 onClick={() => {
                   onOpenChange(false)
-                 
+                  if (!note) {
+                    setTitle('')
+                    setContent('')
+                  }
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isCreating || isUpdating}
+              >
+                {note ? (isUpdating ? 'Updating...' : 'Update') : (isCreating ? 'Creating...' : 'Create')}
+              </Button>
+            </div>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
