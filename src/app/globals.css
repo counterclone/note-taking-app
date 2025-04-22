@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Dark Galaxy Background */
+/* Dark Galaxy Background (Custom Color for Background) */
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #0a0a12;
+  background-color: #1e1e2f; /* Custom background color to replace bg-gray-900 */
   background-image: 
     radial-gradient(at 71% 77%, hsla(247, 77%, 15%, 0.78) 0px, transparent 50%),
     radial-gradient(at 82% 65%, hsla(280, 100%, 15%, 0.78) 0px, transparent 50%),
@@ -14,6 +14,7 @@ body {
   background-size: 200% 200%;
   animation: galaxyAnimation 60s ease infinite;
   color: #e2e2e2;
+  overflow: hidden;
 }
 
 /* Slower, smoother galaxy animation */
@@ -30,6 +31,25 @@ body {
   75% {
     background-position: 0% 100%;
   }
+}
+
+/* Asteroid Animation */
+@keyframes asteroidAnimation {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(300px) translateY(300px) rotate(360deg);
+  }
+}
+
+.asteroid {
+  position: absolute;
+  background-color: #888;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  animation: asteroidAnimation 20s infinite linear;
 }
 
 /* Subtle twinkling stars */
@@ -59,30 +79,40 @@ body::before {
   }
 }
 
-/* Improved UI Components */
+/* UI Components with Shadcn and Tailwind */
 @layer components {
   /* Cards */
   .card {
-    @apply bg-gray-900 bg-opacity-70 backdrop-blur-sm border border-gray-700 rounded-lg shadow-lg transition-all duration-300;
+    @apply bg-[#2e2e3d] bg-opacity-70 backdrop-blur-sm border border-[#383848] rounded-lg shadow-lg transition-all duration-300;
   }
-  
+
   .card:hover {
-    @apply border-gray-500 shadow-xl;
+    @apply border-[#505050] shadow-xl;
     transform: translateY(-2px);
   }
 
   /* Buttons */
   .btn-primary {
     @apply bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   }
-  
+
+  .btn-primary:hover {
+    @apply shadow-xl;
+  }
+
   .btn-outline {
     @apply border border-indigo-500 text-indigo-400 hover:bg-indigo-900/50 hover:text-indigo-100 font-medium py-2 px-4 rounded-lg transition-all duration-200;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn-outline:hover {
+    @apply shadow-xl;
   }
 
   /* Inputs */
   .input-field {
-    @apply bg-gray-800/70 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200;
+    @apply bg-gray-800/70 border border-[#383848] rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-200;
   }
 
   /* Text */
@@ -93,5 +123,29 @@ body::before {
   /* Special accents */
   .text-accent {
     @apply text-indigo-300;
+  }
+}
+
+/* Aesthetic Adjustments */
+a {
+  @apply text-indigo-300 hover:text-indigo-500;
+}
+
+h1, h2, h3, p {
+  @apply text-center text-white font-bold;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .card {
+    @apply p-4;
+  }
+
+  .input-field {
+    @apply w-full;
+  }
+
+  .btn-primary, .btn-outline {
+    @apply w-full;
   }
 }
