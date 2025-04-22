@@ -52,9 +52,9 @@ export default function HomeContent() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="shadow-md backdrop-blur border-b border-white/20">
+      <header className="shadow-md backdrop-blur border-b border-black/20">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
-          <h1 className="text-xl font-bold text-white drop-shadow-md">
+          <h1 className="text-xl font-bold text-black drop-shadow-md">
             Notes App
           </h1>
           <div className="flex items-center space-x-4">
@@ -62,7 +62,7 @@ export default function HomeContent() {
             <Button
               variant="outline"
               onClick={() => router.push("/login")}
-              className="text-white border-white/20 hover:bg-white/10"
+              className="text-black border-black/20 hover:bg-purple/10"
             >
               Sign Out
             </Button>
@@ -72,7 +72,7 @@ export default function HomeContent() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-white drop-shadow">
+          <h2 className="text-2xl font-bold text-black drop-shadow">
             Your Notes
           </h2>
           <Button
@@ -88,14 +88,14 @@ export default function HomeContent() {
 
         {isLoading ? (
           <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
           </div>
         ) : isError ? (
           <div className="text-center py-12 text-red-400">
             Failed to load notes. Please try again.
           </div>
         ) : notes?.length === 0 ? (
-          <div className="text-center py-12 text-white/60">
+          <div className="text-center py-12 text-black/60">
             You do not have any notes yet. Create your first note!
           </div>
         ) : (
@@ -103,7 +103,7 @@ export default function HomeContent() {
             {notes?.map((note) => (
               <Card
                 key={note.id}
-                className="hover:shadow-lg transition-shadow flex flex-col bg-white/10 backdrop-blur border border-white/20 text-white"
+                className="hover:shadow-lg transition-shadow flex flex-col bg-black/10 backdrop-blur border border-white/20 text-white"
               >
                 <CardHeader>
                   <CardTitle className="truncate text-white">
@@ -121,7 +121,7 @@ export default function HomeContent() {
                       variant="outline"
                       size="sm"
                       onClick={() => handleEdit(note)}
-                      className="text-white border-white/20 hover:bg-white/10"
+                      className="text-black border-white/20 hover:bg-white/10"
                     >
                       Edit
                     </Button>
