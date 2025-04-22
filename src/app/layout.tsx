@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+//import type { Metadata } from "next";
+//import { Inter } from "next/font/google";
 import "./globals.css";
-import { QueryProvider } from "@/providers/query-provider";
-import { AuthProvider } from "@/providers/auth-provider";
+//import { QueryProvider } from "@/providers/query-provider";
+//import { AuthProvider } from "@/providers/auth-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+//const inter = Inter({ subsets: ["latin"] });
 
 // layout.tsx (Next.js App Router)
 import "./globals.css";
