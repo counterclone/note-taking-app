@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server'
 
-export const runtime = 'edge' // Recommended for AI APIs
+export const runtime = 'edge'
 
 export async function POST(request: Request) {
   const { text } = await request.json()
 
-  if (!text || typeof text !== 'string') {
+  if (!text || typeof text !== 'string' || text.trim().length === 0) {
     return NextResponse.json(
-      { error: 'Text is required and must be a string' },
+      { error: 'Valid text is required for summarization' },
       { status: 400 }
     )
   }
@@ -24,11 +24,11 @@ export async function POST(request: Request) {
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful assistant that summarizes text. Provide a concise summary of the given text in 1-2 sentences.'
+            content: 'You are a helpful assistant that summarizes text concisely. Provide a 1-2 sentence summary of the given text.'
           },
           {
             role: 'user',
-            content: `Please summarize the following text:\n\n${text}`
+            content: `Summarize the following text in 1-2 sentences:\n\n${text}`
           }
         ],
         temperature: 0.7,
@@ -37,23 +37,29 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      console.error('DeepSeek API error:', errorData)
-      throw new Error(`API request failed with status ${response.status}`)
+      const error = await response.json()
+      console.error('DeepSeek API error:', error)
+      return NextResponse.json(
+        { error: 'Failed to get summary from API' },
+        { status: response.status }
+      )
     }
 
     const data = await response.json()
     const summary = data.choices[0]?.message?.content?.trim()
 
     if (!summary) {
-      throw new Error('No summary content in response')
+      return NextResponse.json(
+        { error: 'No summary content in response' },
+        { status: 500 }
+      )
     }
 
     return NextResponse.json({ summary })
   } catch (error) {
     console.error('Summarization error:', error)
     return NextResponse.json(
-      { error: 'Failed to generate summary. Please try again.' },
+      { error: 'Internal server error during summarization' },
       { status: 500 }
     )
   }
