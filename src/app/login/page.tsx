@@ -25,69 +25,50 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-2xl p-8 shadow-xl bg-white/10 backdrop-blur border border-white/20 text-white">
-        <h1 className="mb-6 text-center text-3xl font-semibold text-white drop-shadow-md">
-          Login
-        </h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
+        <h1 className="mb-6 text-center text-2xl font-bold">Login</h1>
 
-        {error && <div className="mb-4 text-red-400 text-sm">{error}</div>}
+        {error && <div className="mb-4 text-red-500">{error}</div>}
 
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <div>
-            <Label htmlFor="email" className="text-white">
-              Email
-            </Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-white/10 border border-white/20 text-white placeholder:text-white/60"
             />
           </div>
           <div>
-            <Label htmlFor="password" className="text-white">
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="bg-white/10 border border-white/20 text-white placeholder:text-white/60"
             />
           </div>
-          <Button
-            type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-          >
+          <Button type="submit" className="w-full">
             Login
           </Button>
         </form>
 
-        <div className="my-4 flex items-center text-white/70">
-          <div className="flex-grow border-t border-white/20"></div>
-          <span className="mx-4 text-sm">or</span>
-          <div className="flex-grow border-t border-white/20"></div>
+        <div className="my-4 flex items-center">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-4 text-gray-500">or</span>
+          <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        <Button
-          onClick={signInWithGoogle}
-          variant="outline"
-          className="w-full border-black/20 text-black hover:bg-white/10"
-        >
+        <Button onClick={signInWithGoogle} variant="outline" className="w-full">
           Continue with Google
         </Button>
 
         <div className="mt-4 text-center">
-          <Button
-            variant="link"
-            onClick={() => router.push("/signup")}
-            className="text-white underline underline-offset-4 hover:text-purple-300"
-          >
+          <Button variant="link" onClick={() => router.push("/signup")}>
             Don&apos;t have an account? Sign up
           </Button>
         </div>
