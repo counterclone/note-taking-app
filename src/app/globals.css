@@ -119,54 +119,42 @@
 
   body {
     @apply text-foreground;
-    background: radial-gradient(circle, #e0f0ff 0%, #f8fbff 100%);
-    background-attachment: fixed;
-    background-size: cover;
     position: relative;
     overflow-x: hidden;
     animation: fadeIn 1.5s ease-out;
-  }
 
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 200%;
-    background:
-      radial-gradient(circle at 10% 10%, rgba(160, 200, 255, 0.6) 2px, transparent 2px),
-      radial-gradient(circle at 90% 90%, rgba(140, 190, 255, 0.5) 2px, transparent 2px),
-      radial-gradient(circle at 50% 50%, rgba(100, 180, 255, 0.4) 3px, transparent 3px);
-    background-size: 100px 100px;
-    animation: twinkle 12s linear infinite;
-    z-index: 0;
-    pointer-events: none;
+    /* Four stacked backgrounds:
+       1–3: galaxy dot layers
+       4: light-mode gradient (falls back to dark-mode color via background-color)
+    */
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(160,200,255,0.6) 2px, transparent 2px),
+      radial-gradient(circle at 90% 90%, rgba(140,190,255,0.5) 2px, transparent 2px),
+      radial-gradient(circle at 50% 50%, rgba(100,180,255,0.4) 3px, transparent 3px),
+      radial-gradient(circle, #e0f0ff 0%, #f8fbff 100%);
+    background-color: var(--background);
+    background-attachment: fixed, fixed, fixed, fixed;
+    background-size: 100px 100px, 100px 100px, 100px 100px, cover;
   }
 }
 
 @keyframes twinkle {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.15;
-  }
-  50% {
-    transform: translate(-2%, -2%) scale(1.01);
-    opacity: 0.3;
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.15;
-  }
+  0%   { transform: translate(0,0)    scale(1);    opacity: 0.15; }
+  50%  { transform: translate(-2%,-2%) scale(1.01); opacity: 0.3;  }
+  100% { transform: translate(0,0)    scale(1);    opacity: 0.15; }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@layer utilities {
+  body {
+    /* Apply twinkle to each galaxy layer with slight duration offsets */
+    animation:
+      twinkle 12s linear infinite,
+      twinkle 13s linear infinite,
+      twinkle 11s linear infinite;
   }
 }
